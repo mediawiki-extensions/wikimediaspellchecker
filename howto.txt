@@ -1,0 +1,63 @@
+Steps 1-5 are for windows.  Do analogous things in linux, like apt-get
+install php5-pspell on dapper.
+
+Also, put the two php files and the .js in extensions/spellcheck.
+
+Modified from someone's blog:
+
+1. Download and Install ASpell Win32 - http://aspell.net/win32/
+Browse to the ASpell Win32 site and download the latest 'Full installer'
+version for Win32 (currently GNU Aspell-0.50.3 (win32)). It is a regular
+windows setup program. Run it on the server which PHP resides on and follow
+the prompts to complete the installation.
+
+2. Install a Dictionary / Dictionaries
+Download dictionary files for the languages you need to support from the
+same page you downloaded the ASpell binaries from. You need at least one
+dictionary installed (I installed the English dictionary.) Run the windows
+setup program for the dictionary(ies) on the server you installed ASpell
+onto. The folder for ASpell should be automatically detected by the
+dictionary setup program - so you can generally just keep hitting 'Next'
+until it's installed.
+
+3. Copy ASpell DLL's to System32
+Browse to the /bin/ folder in the ASpell program directory (default is
+C:\Program Files\ASpell\bin) and copy the aspell-15.dll to your
+%Win32%/System32 folder (i.e. like you would for files like php4apache2.dll,
+etc.) NOTE: In PHP 5.x you can probably copy aspell-15.dll to the root PHP
+folder as well, but for compatibility with PHP 4.x and 5.x, use
+%Win32%/System32/.
+
+4. Edit php.ini and enable the pspell extension
+Open up your php.ini and find the block where you enable extensions. I've
+noticed that in both PHP 4.3.x and 5.0.x, the pspell extension DLL isn't in
+the list of commented-out extensions. However, the DLL file is provided with
+the PHP package and should be found in your extensions folder under
+"php_pspell.dll". Thus, you must manually add a line to load this extension:
+extension=php_pspell.dll
+
+5. Fix up the aspell data files
+The aspell data files have dos line-endings and need unix line-endings.  For
+the english dictionary I had to modify *.dat and standard.kbd:
+cd c:/Program Files/Aspell/data
+dos2unix *.dat standard.kbd
+
+6. Enable the spellchecker extension
+Edit LocalSettings.php, add the line
+
+include_once("spellcheck/spellcheckext.php");
+note:  ^^^^^
+
+Also, if these lines aren't there, add them:
+
+$personalDictionaryLocation = "$IP/extensions/spellcheck/added_words.txt";
+# if these are blank, they won't be used
+$pspell_data_dir = "";
+$pspell_dict_dir = "";
+#$pspell_data_dir = "c:\\program files\\aspell\\data";
+#$pspell_dict_dir = "c:\\program files\\aspell\\dict";
+
+personalDictionaryLocation tells pspell where to store words added by users. 
+
+The last two constants tell pspell where to find data directories.  They
+seem to be required on windows servers.
