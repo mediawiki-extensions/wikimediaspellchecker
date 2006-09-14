@@ -13,8 +13,8 @@
 $wgExtensionFunctions[] = "wfServerSpellcheckExtension";
 
 $wgExtensionCredits['other'][] = array(
-					     'name' => 'SCIJAX Spell Check',
-					     'author' => 'David Grogan, <nowiki>http://sourceforge.net/projects/scijax</nowiki>',
+					     'name' => 'SCIJAX Spell Check Improved',
+					     'author' => '<nowiki>http://code.google.com/p/wikimediaspellchecker/</nowiki>',
 					     'version' => 'v1.0'
 					     );
 
