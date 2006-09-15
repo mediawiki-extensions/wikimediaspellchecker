@@ -1,9 +1,10 @@
-Steps 1-5 are for windows.  Do analogous things in linux, like apt-get
-install php5-pspell on dapper.
+This is mostly from someone's blog and the scijax docs.
 
-Also, put the two php files and the .js in extensions/spellcheck.
+Steps 1-5 tell how to enable a windows machine to support php's
+spellchecking api. Instead of doing steps 1-5 in linux, do something like
+apt-get install aspell php5-pspell.
 
-Modified from someone's blog:
+Steps 6+ are for windows AND linux.
 
 1. Download and Install ASpell Win32 - http://aspell.net/win32/
 Browse to the ASpell Win32 site and download the latest 'Full installer'
@@ -42,13 +43,18 @@ the english dictionary I had to modify *.dat and standard.kbd:
 cd c:/Program Files/Aspell/data
 dos2unix *.dat standard.kbd
 
-6. Enable the spellchecker extension
-Edit LocalSettings.php, add the line
+------ end windows only instructions ----
 
+------ begin of importing spellcheck to a new wiki instructions -----
+
+6. Enable the spellchecker extension
+Edit LocalSettings.php, add the line:
+
+note:  vvvvv
 include_once("spellcheck/spellcheckext.php");
 note:  ^^^^^
 
-Also, if these lines aren't there, add them:
+Add these lines:
 
 $personalDictionaryLocation = "$IP/extensions/spellcheck/added_words.txt";
 # if these are blank, they won't be used
@@ -61,3 +67,60 @@ personalDictionaryLocation tells pspell where to store words added by users.
 
 The last two constants tell pspell where to find data directories.  They
 seem to be required on windows servers.
+
+7. Modify includes/EditPage.php
+  You need to add the following line to includes/EditPage.php:
+
+  wfRunHooks( 'EditPageToolbar', array( &$toolbar, NULL ) );
+
+
+  Use the following diff to find the appropriate place.
+
++++ includes/EditPage.php       2005-12-08 15:22:43.529059000 -0500
+@@ -1124,6 +1124,7 @@
+
+                $toolbar.="addInfobox('" . wfEscapeJsString( wfMsg(
+"infobox" ) ) .
+                        "','" . wfEscapeJsString( wfMsg( "infobox_alert" ) )
+. "');\n";
++                wfRunHooks( 'EditPageToolbar', array( &$toolbar, NULL ) );
+                $toolbar.="document.writeln(\"</div>\");\n";
+
+                $toolbar.="/*]]>*/\n</script>";
+
+8. Modify your style sheet.
+
+Add the following to the style sheet that you are using.
+  This is usually located in $MW/skins/monobook/main.css
+
+.MisspeltWord { color :#FF0000 ; text-decoration: underline;
+font-weight:bold ; cursor: pointer;}
+.CorrectedWord { color :#008800 ; text-decoration: underline;
+font-weight:bold ; cursor: pointer;}
+/* Can't use hover because IE doesn't support it
+ * Instead we use two classes and have javascript change between the two in
+code */
+.suggestDiv       { background-color:#ccFFcc; cursor: pointer;}
+.suggestDiv-hover { background-color:#FF0000; cursor: pointer;}
+#editform textarea {
+  border: inset 1px gray;
+  background-color: #fdfdfd;
+  padding: 2px;
+  font-family: monospace;
+  font-size: 90%;
+  line-height: 1.1em;
+}
+.spellCheckDiv    {
+  border: inset 1px gray;
+  background-color:#f0f5ff;
+  padding: 2px;
+  margin: 0;
+  font-family: monospace;
+  font-size: 90%;
+  line-height: 1.1em;
+}
+.spellCheckPre {
+  margin: 0;
+  border: none;
+  color: transparent;
+}
