@@ -47,14 +47,19 @@ dos2unix *.dat standard.kbd
 
 ------ begin of importing spellcheck to a new wiki instructions -----
 
-6. Enable the spellchecker extension
+6. copy the wmspellchecker.tar.gz to your mediawiki directory, the one that
+has maintenance, skins, includes, etc and unzip it there.  The files should
+go in the right directories.
+
+7. Enable the spellchecker extension
+
 Edit LocalSettings.php, add the line:
 
 note:  vvvvv
-include_once("spellcheck/spellcheckext.php");
+include_once("extensions/spellcheck/spellcheckext.php");
 note:  ^^^^^
 
-Add these lines:
+Also add these lines to LocalSettings.php:
 
 $personalDictionaryLocation = "$IP/extensions/spellcheck/added_words.txt";
 # if these are blank, they won't be used
@@ -63,12 +68,13 @@ $pspell_dict_dir = "";
 #$pspell_data_dir = "c:\\program files\\aspell\\data";
 #$pspell_dict_dir = "c:\\program files\\aspell\\dict";
 
-personalDictionaryLocation tells pspell where to store words added by users. 
-
-The last two constants tell pspell where to find data directories.  They
+ - personalDictionaryLocation tells pspell where to store words added by users. 
+  - make sure that $IP/extensions/spellcheck/added_words.txt is writable by the
+webserver!
+ - The last two constants tell pspell where to find data directories.  They
 seem to be required on windows servers.
 
-7. Modify includes/EditPage.php
+8. Modify includes/EditPage.php
   You need to add the following line to includes/EditPage.php:
 
   wfRunHooks( 'EditPageToolbar', array( &$toolbar, NULL ) );
@@ -88,7 +94,7 @@ seem to be required on windows servers.
 
                 $toolbar.="/*]]>*/\n</script>";
 
-8. Modify your style sheet.
+9. Modify your style sheet.
 
 Add the following to the style sheet that you are using.
   This is usually located in $MW/skins/monobook/main.css
@@ -112,7 +118,7 @@ code */
 }
 .spellCheckDiv    {
   border: inset 1px gray;
-  background-color:#f0f5ff;
+  background-color:#90f0f0;
   padding: 2px;
   margin: 0;
   font-family: monospace;
