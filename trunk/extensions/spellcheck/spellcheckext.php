@@ -20,7 +20,18 @@ $wgExtensionCredits['other'][] = array(
 
 function wfServerSpellcheckExtension() {
   global $wgHooks;
-  $wgHooks['EditPageToolbar'][] = 'addSpellTool';
+#  $wgHooks['EditPageToolbar'][] = 'addSpellTool';
+  $wgHooks['BeforePageDisplay'][] = 'addSpellCss';
+}
+
+function addSpellCss(&$out) {
+  global $wgScriptPath;
+  $out->addScript("\n" . '<link rel="stylesheet" type="text/css" href="' .
+    $wgScriptPath . '/extensions/spellcheck/spellcheck.css"' . " />");
+  $out->addScript("\n         <script type='text/javascript' src='" .
+    $wgScriptPath . '/extensions/spellcheck/addspellcheck.js' . "'></script>");
+  $out->addScript("\n         <script type='text/javascript' src='" .
+    $wgScriptPath . '/extensions/spellcheck/spellcheck.js' . "'></script>");
 }
 
 function addSpellTool( &$toolbar ) {
@@ -43,10 +54,9 @@ function addSpellTool( &$toolbar ) {
       inspellcheck = 1;
     }
   }
-  document.writeln(\"<br>\");
   document.writeln(\"<a href='javascript:checkSpelling()'>".
   "<img id='button_spell' class='toolbutton' width='23' height='22' title='spellcheck' alt='Spelling' ".
-  "src='".$wgStylePath."/common/images/button_spell.png' /></a>\");\n";
+  "src='".$wgStylePath."/common/images/button_spell.png' /></a>\");";
   $wgOut->addHTML( "<script language='javascript' src='extensions/spellcheck/spellcheck.js'></script>\n" );
 }
 

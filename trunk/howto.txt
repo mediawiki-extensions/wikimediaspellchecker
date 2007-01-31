@@ -53,18 +53,19 @@ go in the right directories.
 
 7. Enable the spellchecker extension
 
-Edit LocalSettings.php, add the line:
+Edit LocalSettings.php, add the include:
 
 note:  vvvvv
 include_once("extensions/spellcheck/spellcheckext.php");
 note:  ^^^^^
 
-Also add these lines to LocalSettings.php:
+Also add these 7 or so lines to LocalSettings.php:
 
 $personalDictionaryLocation = "$IP/extensions/spellcheck/added_words.txt";
 # if these are blank, they won't be used
 $pspell_data_dir = "";
 $pspell_dict_dir = "";
+# on windows these seem to be needed, I don't know why
 #$pspell_data_dir = "c:\\program files\\aspell\\data";
 #$pspell_dict_dir = "c:\\program files\\aspell\\dict";
 
@@ -73,57 +74,3 @@ $pspell_dict_dir = "";
 webserver!
  - The last two constants tell pspell where to find data directories.  They
 seem to be required on windows servers.
-
-8. Modify includes/EditPage.php
-  You need to add the following line to includes/EditPage.php:
-
-  wfRunHooks( 'EditPageToolbar', array( &$toolbar, NULL ) );
-
-  Use the following diff to find the appropriate place.
-
-+++ includes/EditPage.php	2007-01-31 11:18:19.000000000 -0500
-@@ -1680,6 +1680,7 @@
- 
- 			$toolbar.="addButton('$image','$tip','$open','$close','$sample');\n";
- 		}
-+		wfRunHooks( 'EditPageToolbar', array( &$toolbar, NULL ) );
- 
- 		$toolbar.="/*]]>*/\n</script>";
- 		$toolbar.="\n</div>";
-
-9. Modify your style sheet.
-
-Add the following to the style sheet that you are using.
-  This is usually located in $MW/skins/monobook/main.css
-
-.MisspeltWord { color :#FF0000 ; text-decoration: underline;
-font-weight:bold ; cursor: pointer;}
-.CorrectedWord { color :#008800 ; text-decoration: underline;
-font-weight:bold ; cursor: pointer;}
-/* Can't use hover because IE doesn't support it
- * Instead we use two classes and have javascript change between the two in
-code */
-.suggestDiv       { background-color:#ccFFcc; cursor: pointer;}
-.suggestDiv-hover { background-color:#FF0000; cursor: pointer;}
-#editform textarea {
-  border: inset 1px gray;
-  background-color: #fdfdfd;
-  padding: 2px;
-  font-family: monospace;
-  font-size: 90%;
-  line-height: 1.1em;
-}
-.spellCheckDiv    {
-  border: inset 1px gray;
-  background-color:#90f0f0;
-  padding: 2px;
-  margin: 0;
-  font-family: monospace;
-  font-size: 90%;
-  line-height: 1.1em;
-}
-.spellCheckPre {
-  margin: 0;
-  border: none;
-  color: transparent;
-}

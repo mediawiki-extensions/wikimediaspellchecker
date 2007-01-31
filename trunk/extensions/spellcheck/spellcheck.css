@@ -1,0 +1,31 @@
+.MisspeltWord { color :#FF0000 ; text-decoration: underline;
+font-weight:bold ; cursor: pointer;}
+.CorrectedWord { color :#008800 ; text-decoration: underline;
+font-weight:bold ; cursor: pointer;}
+/* Can't use hover because IE doesn't support it
+ * Instead we use two classes and have javascript change between the two in
+code */
+.suggestDiv       { background-color:#ccFFcc; cursor: pointer;}
+.suggestDiv-hover { background-color:#FF0000; cursor: pointer;}
+#editform textarea {
+  border: inset 1px gray;
+/*  background-color: #fdfdfd; */
+  padding: 2px;
+  font-family: monospace;
+  font-size: 90%;
+  line-height: 1.1em;
+}
+.spellCheckDiv    {
+  border: inset 1px gray;
+  background-color:#90f0f0;
+  padding: 2px;
+  margin: 0;
+  font-family: monospace;
+  font-size: 90%;
+  line-height: 1.1em;
+}
+.spellCheckPre {
+  margin: 0;
+  border: none;
+/*  color: transparent; */
+}
