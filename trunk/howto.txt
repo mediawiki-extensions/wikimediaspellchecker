@@ -79,20 +79,17 @@ seem to be required on windows servers.
 
   wfRunHooks( 'EditPageToolbar', array( &$toolbar, NULL ) );
 
-
   Use the following diff to find the appropriate place.
 
-+++ includes/EditPage.php       2005-12-08 15:22:43.529059000 -0500
-@@ -1124,6 +1124,7 @@
-
-                $toolbar.="addInfobox('" . wfEscapeJsString( wfMsg(
-"infobox" ) ) .
-                        "','" . wfEscapeJsString( wfMsg( "infobox_alert" ) )
-. "');\n";
-+                wfRunHooks( 'EditPageToolbar', array( &$toolbar, NULL ) );
-                $toolbar.="document.writeln(\"</div>\");\n";
-
-                $toolbar.="/*]]>*/\n</script>";
++++ includes/EditPage.php	2007-01-31 11:18:19.000000000 -0500
+@@ -1680,6 +1680,7 @@
+ 
+ 			$toolbar.="addButton('$image','$tip','$open','$close','$sample');\n";
+ 		}
++		wfRunHooks( 'EditPageToolbar', array( &$toolbar, NULL ) );
+ 
+ 		$toolbar.="/*]]>*/\n</script>";
+ 		$toolbar.="\n</div>";
 
 9. Modify your style sheet.
 
