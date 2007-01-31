@@ -1,0 +1,126 @@
+This is mostly from someone's blog and the scijax docs.
+
+Steps 1-5 tell how to enable a windows machine to support php's
+spellchecking api. Instead of doing steps 1-5 in linux, do something like
+apt-get install aspell php5-pspell.
+
+Steps 6+ are for windows AND linux.
+
+1. Download and Install ASpell Win32 - http://aspell.net/win32/
+Browse to the ASpell Win32 site and download the latest 'Full installer'
+version for Win32 (currently GNU Aspell-0.50.3 (win32)). It is a regular
+windows setup program. Run it on the server which PHP resides on and follow
+the prompts to complete the installation.
+
+2. Install a Dictionary / Dictionaries
+Download dictionary files for the languages you need to support from the
+same page you downloaded the ASpell binaries from. You need at least one
+dictionary installed (I installed the English dictionary.) Run the windows
+setup program for the dictionary(ies) on the server you installed ASpell
+onto. The folder for ASpell should be automatically detected by the
+dictionary setup program - so you can generally just keep hitting 'Next'
+until it's installed.
+
+3. Copy ASpell DLL's to System32
+Browse to the /bin/ folder in the ASpell program directory (default is
+C:\Program Files\ASpell\bin) and copy the aspell-15.dll to your
+%Win32%/System32 folder (i.e. like you would for files like php4apache2.dll,
+etc.) NOTE: In PHP 5.x you can probably copy aspell-15.dll to the root PHP
+folder as well, but for compatibility with PHP 4.x and 5.x, use
+%Win32%/System32/.
+
+4. Edit php.ini and enable the pspell extension
+Open up your php.ini and find the block where you enable extensions. I've
+noticed that in both PHP 4.3.x and 5.0.x, the pspell extension DLL isn't in
+the list of commented-out extensions. However, the DLL file is provided with
+the PHP package and should be found in your extensions folder under
+"php_pspell.dll". Thus, you must manually add a line to load this extension:
+extension=php_pspell.dll
+
+5. Fix up the aspell data files
+The aspell data files have dos line-endings and need unix line-endings.  For
+the english dictionary I had to modify *.dat and standard.kbd:
+cd c:/Program Files/Aspell/data
+dos2unix *.dat standard.kbd
+
+------ end windows only instructions ----
+
+------ begin of importing spellcheck to a new wiki instructions -----
+
+6. Enable the spellchecker extension
+Edit LocalSettings.php, add the line:
+
+note:  vvvvv
+include_once("spellcheck/spellcheckext.php");
+note:  ^^^^^
+
+Add these lines:
+
+$personalDictionaryLocation = "$IP/extensions/spellcheck/added_words.txt";
+# if these are blank, they won't be used
+$pspell_data_dir = "";
+$pspell_dict_dir = "";
+#$pspell_data_dir = "c:\\program files\\aspell\\data";
+#$pspell_dict_dir = "c:\\program files\\aspell\\dict";
+
+personalDictionaryLocation tells pspell where to store words added by users. 
+
+The last two constants tell pspell where to find data directories.  They
+seem to be required on windows servers.
+
+7. Modify includes/EditPage.php
+  You need to add the following line to includes/EditPage.php:
+
+  wfRunHooks( 'EditPageToolbar', array( &$toolbar, NULL ) );
+
+
+  Use the following diff to find the appropriate place.
+
++++ includes/EditPage.php       2005-12-08 15:22:43.529059000 -0500
+@@ -1124,6 +1124,7 @@
+
+                $toolbar.="addInfobox('" . wfEscapeJsString( wfMsg(
+"infobox" ) ) .
+                        "','" . wfEscapeJsString( wfMsg( "infobox_alert" ) )
+. "');\n";
++                wfRunHooks( 'EditPageToolbar', array( &$toolbar, NULL ) );
+                $toolbar.="document.writeln(\"</div>\");\n";
+
+                $toolbar.="/*]]>*/\n</script>";
+
+8. Modify your style sheet.
+
+Add the following to the style sheet that you are using.
+  This is usually located in $MW/skins/monobook/main.css
+
+.MisspeltWord { color :#FF0000 ; text-decoration: underline;
+font-weight:bold ; cursor: pointer;}
+.CorrectedWord { color :#008800 ; text-decoration: underline;
+font-weight:bold ; cursor: pointer;}
+/* Can't use hover because IE doesn't support it
+ * Instead we use two classes and have javascript change between the two in
+code */
+.suggestDiv       { background-color:#ccFFcc; cursor: pointer;}
+.suggestDiv-hover { background-color:#FF0000; cursor: pointer;}
+#editform textarea {
+  border: inset 1px gray;
+  background-color: #fdfdfd;
+  padding: 2px;
+  font-family: monospace;
+  font-size: 90%;
+  line-height: 1.1em;
+}
+.spellCheckDiv    {
+  border: inset 1px gray;
+  background-color:#f0f5ff;
+  padding: 2px;
+  margin: 0;
+  font-family: monospace;
+  font-size: 90%;
+  line-height: 1.1em;
+}
+.spellCheckPre {
+  margin: 0;
+  border: none;
+  color: transparent;
+}
