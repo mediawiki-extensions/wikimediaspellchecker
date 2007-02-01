@@ -11,6 +11,6 @@ Q: Does this support mediawiki version 1.6.x ?
 A: I don't know.  I bet the 1.5.2 version does.  Please let me know and I'll update the docs.
 
 
-Q: Adding numbers to the custom dictionary doesn't work.  Why not?
+Q: Adding words with numbers to the custom dictionary doesn't work.  Why not?
 
 A: aspell doesn't support words with numbers in them by default.  I don't see anyway to set the validate-words flag through the php api.
