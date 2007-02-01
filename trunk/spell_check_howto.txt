@@ -53,14 +53,10 @@ go in the right directories.
 
 7. Enable the spellchecker extension
 
-Edit LocalSettings.php, add the include:
+Edit LocalSettings.php, add these lines:
 
-note:  vvvvv
+################
 include_once("extensions/spellcheck/spellcheckext.php");
-note:  ^^^^^
-
-Also add these 7 or so lines to LocalSettings.php:
-
 $personalDictionaryLocation = "$IP/extensions/spellcheck/added_words.txt";
 # if these are blank, they won't be used
 $pspell_data_dir = "";
@@ -68,6 +64,7 @@ $pspell_dict_dir = "";
 # on windows these seem to be needed, I don't know why
 #$pspell_data_dir = "c:\\program files\\aspell\\data";
 #$pspell_dict_dir = "c:\\program files\\aspell\\dict";
+################
 
  - personalDictionaryLocation tells pspell where to store words added by users. 
   - make sure that $IP/extensions/spellcheck/added_words.txt is writable by the
