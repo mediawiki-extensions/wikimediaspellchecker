@@ -1,4 +1,4 @@
-Changes since in 0.1 (feb 1, 2007):
+Changes in 0.1 (feb 1, 2007):
   * now supports newer mw versions instead of just old ones
   * fixed background color of edit box in spellcheck mode
   * simpler installation - no changes are needed to core mw code
