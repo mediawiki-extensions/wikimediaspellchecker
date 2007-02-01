@@ -13,4 +13,4 @@ A: I don't know.  I bet the 1.5.2 version does.  Please let me know and I'll upd
 
 Q: Adding words with numbers to the custom dictionary doesn't work.  Why not?
 
-A: aspell doesn't support words with numbers in them by default.  I don't see anyway to set the validate-words flag through the php api.
+A: aspell doesn't support words with numbers in them by default.  I don't see any way to set the validate-words flag through the php api.
