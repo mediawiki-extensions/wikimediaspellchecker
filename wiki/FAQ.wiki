@@ -19,3 +19,8 @@ A: aspell doesn't support words with numbers in them by default.  I don't see an
 Q: Are there any known issues?
 
 A: You can't add words with an underscore or digits to the dictionary.  Tab handling is funky.
+
+Q: Why would I use this extension instead of a browser-based spellchecker or an online service?
+  * each wiki can have its own custom dictionary
+  * no outside internet access
+  * users of your wiki are required to use older browsers
