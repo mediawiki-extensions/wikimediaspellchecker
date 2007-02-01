@@ -1,0 +1,16 @@
+#summary Frequently asked questions
+#labels Featured,Phase-Support
+
+Q: Why doesn't adding words to the custom dictionary work?
+
+A: Make sure the extensions/spellcheck/added_words.txt file is writable by the webserver user.  You can always use chmod 666 added_words.txt as a sledgehammer.
+
+
+Q: Does this support mediawiki version 1.6.x ?
+
+A: I don't know.  I bet the 1.5.2 version does.  Please let me know and I'll update the docs.
+
+
+Q: Adding numbers to the custom dictionary doesn't work.  Why not?
+
+A: aspell doesn't support words with numbers in them by default.  I don't see anyway to set the validate-words flag through the php api.
