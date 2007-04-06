@@ -57,7 +57,7 @@ Edit LocalSettings.php, add these lines:
 
 ################
 include_once("extensions/spellcheck/spellcheckext.php");
-$personalDictionaryLocation = "$IP/extensions/spellcheck/added_words.txt";
+$personalDictionaryLocation = "$IP/extensions/spellcheck/personalDictionaries/added_words";
 # if these are blank, they won't be used
 $pspell_data_dir = "";
 $pspell_dict_dir = "";
@@ -67,7 +67,10 @@ $pspell_dict_dir = "";
 ################
 
  - personalDictionaryLocation tells pspell where to store words added by users. 
-  - make sure that $IP/extensions/spellcheck/added_words.txt is writable by the
+  - make sure that $IP/extensions/spellcheck/personalDictionaries/ is writable by the
 webserver!
+  - added_words_en will be used for english words, added_words_it for italian words, etc
+    - your language preference in MW when you add the word dictates where
+the new words go
  - The last two constants tell pspell where to find data directories.  They
 seem to be required on windows servers.
